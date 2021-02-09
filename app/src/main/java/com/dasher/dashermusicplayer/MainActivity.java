@@ -31,7 +31,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
 			ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
 		}else{
-
+			
 		}
 	}
 
@@ -150,6 +150,21 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			case R.id.bottombar_xml_expandedImageView:
 				layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				break;
+		}
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults)
+	{
+		// TODO: Implement this method
+		super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+		if(requestCode == STORAGE_REQUEST_CODE && grantResults.length > 0){
+			if(grantResults[0] == PackageManager.PERMISSION_GRANTED){
+				Toast.makeText(getApplicationContext(),"Permission Granted",2000).show();
+			}else{
+				Toast.makeText(getApplicationContext(),"Permission Denied",2000).show();
+				ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+			}
 		}
 	}
 
