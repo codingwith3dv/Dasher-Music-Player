@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	android:layout_height="match_parent"
+	android:layout_width="match_parent"
+	android:id="@+id/botombar_xmlRelativeLayout"
+	android:background="#000000"
+	android:layout_gravity="bottom">
+
+	<ImageView
+		android:layout_height="30dp"
+		android:layout_width="30dp"
+		android:src="@drawable/ic_next_256"
+		android:layout_alignParentRight="true"
+		android:layout_margin="10dp"
+		android:scaleType="centerCrop"
+		android:id="@+id/mainImageView2"/>
+
+	<ImageView
+		android:layout_height="30dp"
+		android:layout_width="30dp"
+		android:src="@drawable/ic_pause_256"
+		android:layout_toLeftOf="@id/mainImageView2"
+		android:layout_margin="10dp"
+		android:scaleType="centerCrop"
+		android:id="@+id/mainImageView1"/>
+
+	<ImageView
+		android:layout_height="30dp"
+		android:layout_width="30dp"
+		android:src="@drawable/ic_prev_256"
+		android:layout_toLeftOf="@id/mainImageView1"
+		android:layout_margin="10dp"
+		android:scaleType="centerCrop"
+		android:id="@+id/mainImageView3"/>
+
+	<ImageView
+		android:layout_height="30dp"
+		android:layout_width="30dp"
+		android:src="@drawable/ic_up_256"
+		android:adjustViewBounds="true"
+		android:layout_margin="10dp"
+		android:id="@+id/botombarxmlImageView1"/>
+
+</RelativeLayout>
+

@@ -1,11 +1,12 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
+    compileSdkVersion 25
+	buildToolsVersion "25.4.0"
 
     defaultConfig {
         applicationId "com.dasher.dashermusicplayer"
-        minSdkVersion 14
+        minSdkVersion 23
         targetSdkVersion 29
         versionCode 1
         versionName "1.0"
@@ -19,5 +20,9 @@ android {
 }
 
 dependencies {
+	compile 'com.android.support:cardview-v7:25.+'
+	compile 'com.android.support:appcompat-v7:25.+'
+	compile 'com.android.support:design:25.+'
+	compile 'com.sothree.slidinguppanel:library:3.4.0'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

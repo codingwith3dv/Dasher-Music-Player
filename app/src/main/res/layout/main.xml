@@ -1,11 +1,61 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    android:gravity="center">
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
+	android:layout_width="match_parent"
+	android:layout_height="match_parent">
 
-    <TextView
-        android:text="@string/hello_world"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+	<com.sothree.slidinguppanel.SlidingUpPanelLayout
+		xmlns:sothree="http://schemas.android.com/apk/res-auto"
+		android:id="@+id/sliding_layout"
+		android:layout_width="match_parent"
+		android:layout_height="match_parent"
+		android:gravity="bottom"
+		sothree:umanoPanelHeight="50dp"
+		sothree:umanoShadowHeight="4dp">
 
-</LinearLayout>
+		<RelativeLayout
+			android:layout_width="match_parent"
+			android:layout_height="match_parent"
+			android:id="@+id/mainRelativeLayoutfordifferentfunctions"
+			android:layout_marginBottom="0dp">
+
+			<android.support.design.widget.TabLayout
+				android:id="@+id/tab_layout"
+				android:layout_width="match_parent"
+				android:layout_height="wrap_content"
+				android:layout_alignParentTop="true"
+				android:textColor="@color/colorBlack"
+				android:background="@color/colorPrimary"
+				android:elevation="6dp"
+				android:minHeight="?attr/actionBarSize"
+				android:theme="@style/AppTheme"/>
+
+			<android.support.v4.view.ViewPager
+				android:layout_height="match_parent"
+				android:layout_width="match_parent"
+				android:padding="0dp"
+				android:id="@+id/mainViewPager1"
+				android:layout_below="@id/tab_layout"/>
+
+		</RelativeLayout>
+
+		<RelativeLayout
+			android:layout_height="match_parent"
+			android:layout_width="match_parent"
+			android:clickable="true">
+		
+			
+			<include
+				android:id="@+id/maininclude"
+				layout = "@layout/botombar_xml"/>
+			<include
+				android:id="@+id/maininclude2"
+				layout = "@layout/bottombar_xml_expanded"
+				android:visibility="invisible"/>
+		</RelativeLayout>
+
+	</com.sothree.slidinguppanel.SlidingUpPanelLayout>
+
+</RelativeLayout>
+
