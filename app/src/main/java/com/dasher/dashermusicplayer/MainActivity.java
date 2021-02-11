@@ -1,18 +1,20 @@
 package com.dasher.dashermusicplayer;
-import android.*;
-import android.content.pm.*;
-import android.os.*;
-import android.support.design.widget.*;
-import android.support.v4.app.*;
-import android.support.v4.content.*;
-import android.support.v4.view.*;
-import android.support.v7.app.*;
-import com.dasher.dashermusicplayer.Utils.*;
-import android.widget.*;
-import android.view.*;
-import com.sothree.slidinguppanel.*;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.*;
 
+import android.Manifest;
+import android.content.pm.PackageManager;
+import android.os.Bundle;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
+import android.support.v4.view.ViewPager;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
+import android.view.View;
+import android.widget.ImageView;
+import android.widget.Toast;
+import com.dasher.dashermusicplayer.R;
+import com.dasher.dashermusicplayer.Utils.CustomPagerAdapter;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -40,14 +42,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+	
+		Toolbar toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
+		setSupportActionBar(toolBar);
 		getSupportActionBar().hide();
-
+		
 		checkPermission();
 
 		layout= (SlidingUpPanelLayout)
 			findViewById(R.id.sliding_layout);
 		layout.setDragView(R.id.maininclude);
-
+		
 		playOrPause = (ImageView)findViewById(R.id.mainImageView1);
 		playOrPause.setOnClickListener(this);
 
