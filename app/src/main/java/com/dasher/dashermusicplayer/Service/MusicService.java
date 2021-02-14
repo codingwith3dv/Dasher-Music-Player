@@ -35,11 +35,13 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 		// TODO: Implement this method
 		String intentAction = intent.getAction();
 		switch(intentAction){
-			case Constants.ACTION_PLAY:
+			case Constants.ACTION_CREATE:
 				String path = intent.getStringExtra(Constants.PATH_REFERENCE);
 				String title = intent.getStringExtra(Constants.TITLE_REFERENCE);
 				Toast.makeText(getApplicationContext(),title + "\n" + path,2000).show();
 				playSongInService(path);
+				break;
+			case Constants.ACTION_PLAY:
 				break;
 			default:
 				break;

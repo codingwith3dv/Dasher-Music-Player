@@ -77,7 +77,8 @@ public class ArtistAdapter extends RecyclerView.Adapter<ArtistAdapter.ArtistView
 		AlbumList list = mArrayList.get(p2);
 		p1.mTextView1.setText(list.getArtistName());
 		p1.mTextView2.setText(String.valueOf(list.getnumber_of_songs()));
-		p1.mImageView.setImageResource(R.drawable.ic_launcher);
+		p1.mImageView.setImageResource(R.drawable.ic_launcher_small_256);
+		p1.mImageView.setClipToOutline(true);
 	}
 
 	@Override

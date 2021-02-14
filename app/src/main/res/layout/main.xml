@@ -60,10 +60,6 @@
 			<include
 				android:id="@+id/maininclude"
 				layout = "@layout/botombar_xml"/>
-			<include
-				android:id="@+id/maininclude2"
-				layout = "@layout/bottombar_xml_expanded"
-				android:visibility="invisible"/>
 		</RelativeLayout>
 
 	</com.sothree.slidinguppanel.SlidingUpPanelLayout>

@@ -80,10 +80,11 @@ public class TrackAdapter extends RecyclerView.Adapter<TrackAdapter.TrackViewHol
 	
 		byte[] image = trackList.getImage();
 		if(image == null){
-			p1.mAlbumArt.setImageResource(R.drawable.ic_launcher);
+			p1.mAlbumArt.setImageResource(R.drawable.ic_launcher_small_256);
 		}else{
 			p1.mAlbumArt.setImageBitmap(BitmapFactory.decodeByteArray(image,0,image.length));
 		}
+		p1.mAlbumArt.setClipToOutline(true);
 		setAnimation(p1.itemView,p2);
 	}
 

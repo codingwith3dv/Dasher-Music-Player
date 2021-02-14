@@ -15,6 +15,7 @@ import android.widget.Toast;
 import com.dasher.dashermusicplayer.R;
 import com.dasher.dashermusicplayer.Utils.CustomPagerAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -28,6 +29,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private ImageView playOrPause;
 	private ImageView slideUp;
 	private ImageView slideDown;
+
+	private float slideOffset;
 
 	public void checkPermission(){
 		if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -48,22 +51,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		getSupportActionBar().hide();
 		
 		checkPermission();
+		
+		playOrPause = (ImageView) findViewById(R.id.mainImageView1);
+		playOrPause.setOnClickListener(this);
 
 		layout= (SlidingUpPanelLayout)
 			findViewById(R.id.sliding_layout);
-		layout.setDragView(R.id.maininclude);
 		
-		playOrPause = (ImageView)findViewById(R.id.mainImageView1);
-		playOrPause.setOnClickListener(this);
-
-		slideUp = (ImageView) findViewById(R.id.botombarxmlImageView1);
-		slideUp.setOnClickListener(this);
-
-		slideDown = (ImageView)findViewById(R.id.bottombar_xml_expandedImageView);
-		slideDown.setOnClickListener(this);
-
-		(findViewById(R.id.maininclude)).setOnClickListener(this);
-
+		
 		tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 		tabLayout.addTab(tabLayout.newTab().setText("Tracks"));
 		tabLayout.addTab(tabLayout.newTab().setText("Artists"));
@@ -90,45 +85,46 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 					// TODO: Implement this method
 				}
 			});
-
+		
 		layout.addPanelSlideListener(new SlidingUpPanelLayout.PanelSlideListener(){
-				@Override
-				public void onPanelSlide(View p1, float p2)
-				{
-					// TODO: Implement this method
-					if(p2 == 0.0){
-						isExpanded = false;
-						Toast.makeText(getApplicationContext(),"" + isExpanded,2000).show();
-						(findViewById(R.id.maininclude)).setVisibility(View.VISIBLE);
-						(findViewById(R.id.maininclude2)).setVisibility(View.INVISIBLE);
-						tabLayout.setVisibility(View.VISIBLE);
-					}else if(p2 == 1.0){
-						isExpanded = true;
-						Toast.makeText(getApplicationContext(),"" + isExpanded,2000).show();
-						(findViewById(R.id.maininclude)).setVisibility(View.INVISIBLE);
-						(findViewById(R.id.maininclude2)).setVisibility(View.VISIBLE);
-						tabLayout.setVisibility(View.GONE);
-					}else if(p2 > 0.0 && p2 < 1.0){
-						if(isExpanded == true){
-							//(findViewById(R.id.maininclude)).setVisibility(View.VISIBLE);
-							(findViewById(R.id.maininclude)).setVisibility(View.VISIBLE);
-							(findViewById(R.id.maininclude2)).setVisibility(View.INVISIBLE);
-							tabLayout.setVisibility(View.VISIBLE);
-						}
-						else{
-							(findViewById(R.id.maininclude)).setVisibility(View.INVISIBLE);
-							(findViewById(R.id.maininclude2)).setVisibility(View.VISIBLE);
-							tabLayout.setVisibility(View.GONE);
-						}
+			@Override
+			public void onPanelSlide(View p1, float p2)
+			{
+				slideOffset = p2;
+				// TODO: Implement this method
+				if(layout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED){
+					playOrPause.setVisibility(View.INVISIBLE);
+					playOrPause.setEnabled(false);
+					isExpanded = true;
+				}else if(layout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
+					playOrPause.setVisibility(View.VISIBLE);
+					playOrPause.setEnabled(true);
+					isExpanded = false;
+				}else if(p2 > 0.0f && p2 < 1.0f){
+					if(isExpanded){
+						playOrPause.setAlpha(0.f + p2);
+					}else{
+						playOrPause.setAlpha(1.f - p2);
 					}
 				}
+			}
 
-				@Override
-				public void onPanelStateChanged(View p1, SlidingUpPanelLayout.PanelState p2, SlidingUpPanelLayout.PanelState p3)
+			@Override
+			public void onPanelStateChanged(View p1, SlidingUpPanelLayout.PanelState p2, SlidingUpPanelLayout.PanelState p3)
+			{
+				// TODO: Implement this method
+				if(slideOffset<0.2&& p2 == SlidingUpPanelLayout.PanelState.DRAGGING)
 				{
-					// TODO: Implement this method
+					layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				}
-			});
+				else if(slideOffset == 1&& p2 == SlidingUpPanelLayout.PanelState.DRAGGING)
+				{
+					layout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
+				}
+			}
+		});
+
+		
 	}
 
 	@Override
@@ -147,13 +143,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		// TODO: Implement this method
 		switch(p1.getId()){
 			case R.id.mainImageView1:
-				Toast.makeText(getApplicationContext(),"PlayPauseEvent",2000).show();
+				if(isExpanded == false){
+					Toast.makeText(getApplicationContext(),"PlayPauseEvent",2000).show();
+				}
 				break;
 			case R.id.botombarxmlImageView1:
 				layout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
-				break;
-			case R.id.bottombar_xml_expandedImageView:
-				layout.setPanelState(SlidingUpPanelLayout.PanelState.COLLAPSED);
 				break;
 		}
 	}

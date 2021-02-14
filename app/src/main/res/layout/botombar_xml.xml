@@ -1,46 +1,70 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout
 	xmlns:android="http://schemas.android.com/apk/res/android"
+	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_height="match_parent"
 	android:layout_width="match_parent"
 	android:id="@+id/botombar_xmlRelativeLayout"
-	android:background="#000000"
+	android:background="#FFFFFF"
 	android:layout_gravity="bottom">
 
-	<ImageView
-		android:layout_height="30dp"
-		android:layout_width="30dp"
-		android:src="@drawable/ic_next_256"
-		android:layout_alignParentRight="true"
-		android:layout_margin="10dp"
-		android:scaleType="centerCrop"
-		android:id="@+id/mainImageView2"/>
+	<RelativeLayout
+		android:layout_height="50dp"
+		android:layout_width="match_parent"
+		android:background="#000000">
 
-	<ImageView
-		android:layout_height="30dp"
-		android:layout_width="30dp"
-		android:src="@drawable/ic_pause_256"
-		android:layout_toLeftOf="@id/mainImageView2"
-		android:layout_margin="10dp"
-		android:scaleType="centerCrop"
-		android:id="@+id/mainImageView1"/>
+		<ImageView
+			android:layout_height="40dp"
+			android:layout_width="40dp"
+			android:src="@drawable/pause_button"
+			android:layout_margin="5dp"
+			android:scaleType="centerCrop"
+			android:id="@+id/mainImageView1"
+			android:clickable="true"
+			android:layout_alignParentRight="true"/>
 
-	<ImageView
-		android:layout_height="30dp"
-		android:layout_width="30dp"
-		android:src="@drawable/ic_prev_256"
-		android:layout_toLeftOf="@id/mainImageView1"
-		android:layout_margin="10dp"
-		android:scaleType="centerCrop"
-		android:id="@+id/mainImageView3"/>
+		<RelativeLayout
+			android:layout_height="wrap_content"
+			android:layout_width="match_parent"
+			android:layout_toLeftOf="@id/mainImageView1"
+			android:layout_marginTop="6dp"
+			android:layout_marginLeft="8dp">
 
-	<ImageView
-		android:layout_height="30dp"
-		android:layout_width="30dp"
-		android:src="@drawable/ic_up_256"
-		android:adjustViewBounds="true"
-		android:layout_margin="10dp"
-		android:id="@+id/botombarxmlImageView1"/>
+			<android.support.v7.widget.CardView
+				android:layout_width="wrap_content"
+				android:layout_height="wrap_content"
+				app:cardCornerRadius="10dp"
+				app:cardElevation="4dp"
+				android:layout_margin="2dp"
+				android:id="@+id/currentPlayImageSmall"
+				app:cardPreventCornerOverlap="false">
+
+				<ImageView
+					android:layout_height="35dp"
+					android:layout_width="35dp"
+					android:src="@drawable/ic_launcher_small_256"
+					android:id="@+id/botombarxmlImageView1"
+					android:layout_alignParentLeft="true"
+					android:layout_margin="0dp"
+					android:scaleType="centerCrop"/>
+
+			</android.support.v7.widget.CardView>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:layout_width="wrap_content"
+				android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id turpis urna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed sodales lacus vestibulum quam lobortis, id pretium justo bibendum. Proin eleifend, nulla sed scelerisque imperdiet, eros magna suscipit metus, quis varius neque ligula quis quam. Aenean mattis placerat finibus. Donec vehicula efficitur dolor sit amet hendrerit. Sed tristique, erat a interdum semper, lacus leo aliquet turpis, a fermentum mi magna quis nisi. Aliquam at tortor tortor. Donec tempus ut sem eget tristique."
+				android:textColor="#FFFFFF"
+				android:layout_toRightOf="@id/currentPlayImageSmall"
+				android:textSize="20sp"
+				android:layout_marginLeft="5dp"
+				android:singleLine="true"
+				android:typeface="normal"/>
+
+		</RelativeLayout>
+
+	</RelativeLayout>
 
 </RelativeLayout>
 

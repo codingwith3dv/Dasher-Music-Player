@@ -16,42 +16,51 @@
 		android:layout_width="match_parent"
 		android:layout_height="wrap_content"
 		android:padding="5dp">
-	
-		<ImageView
-			android:layout_height="40dp"
-			android:layout_width="40dp"
-			android:src="@android:drawable/ic_delete"
-			android:id="@+id/trackitemlayoutImageView1"
-			android:adjustViewBounds="true"
-			android:scaleType="fitXY"
-			android:layout_alignParentRight="true"
-			android:layout_margin="5dp"/>
-	
+
+		<android.support.v7.widget.CardView
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			app:cardCornerRadius="10dp"
+			app:cardElevation="4dp"
+			android:id="@+id/trackitemlayoutCardView"
+			app:cardPreventCornerOverlap="false">
+
+			<ImageView
+				android:layout_height="43dp"
+				android:layout_width="43dp"
+				android:src="@android:drawable/ic_delete"
+				android:id="@+id/trackitemlayoutImageView1"
+				android:layout_alignParentLeft="true"
+				android:layout_margin="0dp"
+				android:scaleType="centerCrop"/>
+
+		</android.support.v7.widget.CardView>
+
 		<RelativeLayout
 			android:layout_width="wrap_content"
 			android:layout_height="wrap_content"
-			android:layout_toLeftOf="@id/trackitemlayoutImageView1"
-			android:layout_alignParentLeft="true">
-	
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceLarge"
-			android:layout_width="wrap_content"
-			android:text="Large Text"
-			android:id="@+id/trackitemlayoutTextView1"
-			android:textSize="20sp"
-			android:singleLine="true"/>
+			android:layout_toRightOf="@id/trackitemlayoutCardView"
+			android:padding="3dp">
 
-		<TextView
-			android:layout_height="wrap_content"
-			android:textAppearance="?android:attr/textAppearanceMedium"
-			android:layout_width="wrap_content"
-			android:text="Medium Text"
-			android:layout_below="@id/trackitemlayoutTextView1"
-			android:textSize="15sp"
-			android:id="@+id/trackitemlayoutTextView2"
-			android:singleLine="true"/>
-		
+			<TextView
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceLarge"
+				android:layout_width="wrap_content"
+				android:text="Large Text"
+				android:id="@+id/trackitemlayoutTextView1"
+				android:textSize="20sp"
+				android:singleLine="true"/>
+
+			<TextView
+				android:layout_height="wrap_content"
+				android:textAppearance="?android:attr/textAppearanceMedium"
+				android:layout_width="wrap_content"
+				android:text="Medium Text"
+				android:layout_below="@id/trackitemlayoutTextView1"
+				android:textSize="15sp"
+				android:id="@+id/trackitemlayoutTextView2"
+				android:singleLine="true"/>
+
 		</RelativeLayout>
 
 	</RelativeLayout>

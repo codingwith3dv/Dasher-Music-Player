@@ -40,14 +40,7 @@ public class LoadMusic {
 	
 			cursor.close();
 		}
-		Collections.sort( mArrayList, new Comparator<SongList>( ){
-				@Override
-				public int compare( SongList p1, SongList p2 )
-				{
-					// TODO: Implement this method
-					return p1.getTitle().compareTo(p2.getTitle());
-				}
-			});
+		
 		return mArrayList;
 	}
 
