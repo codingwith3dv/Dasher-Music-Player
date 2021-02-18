@@ -9,43 +9,43 @@ import com.dasher.dashermusicplayer.Models.*;
 
 public class LoadMusic {
 
-	public ArrayList<SongList> getAllData(Context context){
+	public ArrayList<SongList> getAllData(final Context context){
 	
-		ArrayList<SongList> mArrayList = new ArrayList<>();
-		
+		final ArrayList<SongList> mArrayList = new ArrayList<>();
+	
 		Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
 		ContentResolver contentResolver = context.getContentResolver();
 		Cursor cursor = contentResolver.query(contentUri,null,null,null,null);
 		ImageRetriever ir = new ImageRetriever();
-		
+
 		if(cursor != null && cursor.moveToFirst()) {
 			try{
 				int title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
 				int artist = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
 				int path = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-				
+
 				do{
 					String titlem = cursor.getString(title);
 					String artistm = cursor.getString(artist);
 					String pathm = cursor.getString(path);
-					
+
 					if(artistm.contains("<")){
 						artistm = "Unknown";
 					}
 					byte[] image = ir.retrieveImageBytesFromPath(pathm);
 					mArrayList.add(new SongList(titlem,artistm,pathm,image));
 				}while(cursor.moveToNext());
-				
+
 			}catch(Exception e){}
-	
+
 			cursor.close();
 		}
 		
 		return mArrayList;
 	}
 
-	public ArrayList<AlbumList> getAlbumList(Context context){
-		ArrayList<AlbumList> artists = new ArrayList<>();
+	public ArrayList<AlbumList> getAlbumList(final Context context){
+		final ArrayList<AlbumList> artists = new ArrayList<>();
 
 		Uri contentUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
 		String id = MediaStore.Audio.Artists._ID;

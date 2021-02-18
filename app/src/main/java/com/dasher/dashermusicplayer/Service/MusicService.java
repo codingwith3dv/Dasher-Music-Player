@@ -1,23 +1,24 @@
 package com.dasher.dashermusicplayer.Service;
 
-import android.app.*;
-import android.content.*;
-import android.os.*;
-import android.media.*;
-import com.dasher.dashermusicplayer.Utils.*;
-import android.widget.*;
-import com.dasher.dashermusicplayer.Utils.Constants;
+import android.app.Service;
+import android.content.Intent;
+import android.media.MediaPlayer;
+import android.os.IBinder;
+import com.dasher.dashermusicplayer.Models.SongList;
 import java.io.IOException;
+import java.util.ArrayList;
+import com.dasher.dashermusicplayer.Player.MusicManager;
+import com.dasher.dashermusicplayer.Utils.Constants;
 
-public class MusicService extends Service implements MediaPlayer.OnPreparedListener
+public class MusicService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener
 {
 
-	MediaPlayer player;
+	private MediaPlayer player;
+	
 	@Override
 	public IBinder onBind(Intent p1)
 	{
 		// TODO: Implement this method
-		//setupMusicPlayer1();
 		return null;
 	}
 
@@ -28,20 +29,20 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 		super.onCreate();
 		player = new MediaPlayer();
 	}
-
+	
 	@Override
 	public int onStartCommand(Intent intent, int flags, int startId)
 	{
 		// TODO: Implement this method
-		String intentAction = intent.getAction();
-		switch(intentAction){
+		String action = intent.getAction();
+		switch(action){
 			case Constants.ACTION_CREATE:
 				String path = intent.getStringExtra(Constants.PATH_REFERENCE);
 				String title = intent.getStringExtra(Constants.TITLE_REFERENCE);
-				Toast.makeText(getApplicationContext(),title + "\n" + path,2000).show();
 				playSongInService(path);
 				break;
 			case Constants.ACTION_PLAY:
+				startSong();
 				break;
 			default:
 				break;
@@ -57,20 +58,23 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 		}
 
 		player.setOnPreparedListener(this);
+		player.setOnCompletionListener(this);
 		
 		try
 		{
 			player.reset();
 			player.setDataSource(path);
+			player.prepare();
 		}catch (IllegalStateException e){}
 		catch (IOException e){}
 		catch (IllegalArgumentException e){}
 		catch (SecurityException e){}
-	
-		player.prepareAsync();
 	}
 
-	
+	private void startSong(){
+		if(player == null)return;
+		player.start();
+	}
 	
 	@Override
 	public void onDestroy()
@@ -84,17 +88,17 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 	}
 
 	@Override
-	public void onTaskRemoved(Intent rootIntent)
-	{
-		// TODO: Implement this method
-		super.onTaskRemoved(rootIntent);
-	}
-
-	@Override
 	public void onPrepared(MediaPlayer p1)
 	{
 		// TODO: Implement this method
-		player.start();
+		
+	}
+
+	@Override
+	public void onCompletion(MediaPlayer p1)
+	{
+		// TODO: Implement this method	
+		MusicManager.playNext();
 	}
 
 }

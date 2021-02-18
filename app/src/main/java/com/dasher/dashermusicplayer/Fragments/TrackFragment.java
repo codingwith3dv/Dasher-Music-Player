@@ -15,7 +15,7 @@ import com.dasher.dashermusicplayer.R;
 import com.dasher.dashermusicplayer.Models.*;
 import android.content.*;
 import com.dasher.dashermusicplayer.Service.*;
-import com.dasher.dashermusicplayer.Player.*;
+import com.dasher.dashermusicplayer.Player.MusicManager;
 
 public class TrackFragment extends Fragment
 {
@@ -29,7 +29,6 @@ public class TrackFragment extends Fragment
 	private LoadMusic lm;
 	MusicService player;
 	private boolean serviceBound = false;
-	MusicManager mMusicManager;
 	
 	public Fragment getNewInstance(){
 		return new TrackFragment();
@@ -52,8 +51,7 @@ public class TrackFragment extends Fragment
 	
 		lm = new LoadMusic();
 		player = new MusicService();
-		mMusicManager = new MusicManager(getActivity());
-	
+		
 		mArrayList = new ArrayList<SongList>(lm.getAllData(getActivity()));
 		
 		//getActivity().getFragmentManager().beginTransaction().replace(R.id.mainRelativeLayout,bbp.getInstance()).commit();
@@ -81,9 +79,7 @@ public class TrackFragment extends Fragment
 			@Override
 			public void onRecyclerViewOnItemClick( int position )
 			{
-				//player.setupMusicPlayer1();
-				//bbp.setPos(position,mArrayList);
-				mMusicManager.setArrayList(mArrayList,position);
+				MusicManager.setArrayList(getActivity(),mArrayList,position);
 			}
 		});
 	}

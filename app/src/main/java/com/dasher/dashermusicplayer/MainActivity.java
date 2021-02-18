@@ -19,18 +19,18 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
-	TabLayout tabLayout;
-	ViewPager viewPager;
-	SlidingUpPanelLayout layout;
+	private static TabLayout tabLayout;
+	private static ViewPager viewPager;
+	private static SlidingUpPanelLayout layout;
 	private static boolean isExpanded;
 
 	private static final int STORAGE_REQUEST_CODE = 100;
 
-	private ImageView playOrPause;
+	private ImageView play;
 	private ImageView slideUp;
 	private ImageView slideDown;
-
 	private float slideOffset;
+	private static Toolbar toolBar;
 
 	public void checkPermission(){
 		if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
@@ -40,21 +40,37 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		}
 	}
 
+	public static void hideOrShowActionBar(boolean show){
+		if(show){
+			tabLayout.setVisibility(View.VISIBLE);
+			toolBar.setVisibility(View.VISIBLE);
+		}else{
+			tabLayout.setVisibility(View.GONE);
+			toolBar.setVisibility(View.GONE);
+		}
+	}
+
     @Override
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
-	
-		Toolbar toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
+		
+		toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
 		setSupportActionBar(toolBar);
-		getSupportActionBar().hide();
+		getSupportActionBar().show();
 		
 		checkPermission();
 		
-		playOrPause = (ImageView) findViewById(R.id.mainImageView1);
-		playOrPause.setOnClickListener(this);
-
+		play = (ImageView) findViewById(R.id.mainImageView1);
+		play.setOnClickListener(new View.OnClickListener(){
+			@Override
+			public void onClick(View p1)
+			{
+				Toast.makeText(getApplicationContext(),"PauseEvent",2000).show();
+			}
+		});
+	
 		layout= (SlidingUpPanelLayout)
 			findViewById(R.id.sliding_layout);
 		
@@ -93,18 +109,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				slideOffset = p2;
 				// TODO: Implement this method
 				if(layout.getPanelState() == SlidingUpPanelLayout.PanelState.EXPANDED){
-					playOrPause.setVisibility(View.INVISIBLE);
-					playOrPause.setEnabled(false);
+					play.setVisibility(View.GONE);
+					play.setClickable(false);
 					isExpanded = true;
 				}else if(layout.getPanelState() == SlidingUpPanelLayout.PanelState.COLLAPSED){
-					playOrPause.setVisibility(View.VISIBLE);
-					playOrPause.setEnabled(true);
+					play.setVisibility(View.VISIBLE);
+					play.setClickable(true);
 					isExpanded = false;
 				}else if(p2 > 0.0f && p2 < 1.0f){
 					if(isExpanded){
-						playOrPause.setAlpha(0.f + p2);
+						play.setAlpha(0.f + p2);
 					}else{
-						playOrPause.setAlpha(1.f - p2);
+						play.setAlpha(1.f - p2);
 					}
 				}
 			}
@@ -142,11 +158,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	{
 		// TODO: Implement this method
 		switch(p1.getId()){
-			case R.id.mainImageView1:
-				if(isExpanded == false){
-					Toast.makeText(getApplicationContext(),"PlayPauseEvent",2000).show();
-				}
-				break;
 			case R.id.botombarxmlImageView1:
 				layout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 				break;

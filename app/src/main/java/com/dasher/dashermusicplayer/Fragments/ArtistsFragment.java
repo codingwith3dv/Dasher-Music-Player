@@ -60,6 +60,7 @@ public class ArtistsFragment extends Fragment
 				public void onRecyclerViewOnItemClick(int position)
 				{
 					// TODO: Implement this method
+					getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainRelativeLayoutfordifferentfunctions,new ArtistDetailsFragment()).addToBackStack(null).commit();
 				}
 			});
 	}
