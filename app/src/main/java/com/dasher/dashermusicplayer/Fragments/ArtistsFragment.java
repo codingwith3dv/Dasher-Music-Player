@@ -38,13 +38,6 @@ public class ArtistsFragment extends Fragment
 		mRecyclerView = v.findViewById(R.id.artist_item_layout);
 		showRecyclerView();
 	
-		long start = System.nanoTime();
-		for(int j = 0; j < mArrayList.size(); j++){
-			ArrayList<SongList> array = lm.getSongsFromArtistId(getActivity(),mArrayList.get(j).getArtistId());
-		}
-		long end = System.nanoTime();
-		long time = (long) (end - start)/1000000000;//*Math.pow(10,-9);
-		Toast.makeText(getActivity(),time + "\n" + (end - start) ,2000).show();
 		return v;
 		
 	}
@@ -53,7 +46,7 @@ public class ArtistsFragment extends Fragment
 		mAdapter = new ArtistAdapter(mArrayList,getActivity());
 		mRecyclerView.setHasFixedSize(true);
 		mRecyclerView.setAdapter(mAdapter);
-		mRecyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+		mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
 		mAdapter.setOnRecyclerViewItemClickListener(new ArtistAdapter.onRecyclerViewOnItemClickListener(){
 
 				@Override

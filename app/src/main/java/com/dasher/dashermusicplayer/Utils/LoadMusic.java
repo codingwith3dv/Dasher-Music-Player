@@ -9,7 +9,7 @@ import com.dasher.dashermusicplayer.Models.*;
 
 public class LoadMusic {
 
-	public ArrayList<SongList> getAllData(final Context context){
+	public static ArrayList<SongList> getAllData(final Context context){
 	
 		final ArrayList<SongList> mArrayList = new ArrayList<>();
 	

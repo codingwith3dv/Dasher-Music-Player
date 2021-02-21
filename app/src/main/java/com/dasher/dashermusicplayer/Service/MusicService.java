@@ -9,11 +9,14 @@ import java.io.IOException;
 import java.util.ArrayList;
 import com.dasher.dashermusicplayer.Player.MusicManager;
 import com.dasher.dashermusicplayer.Utils.Constants;
+import com.dasher.dashermusicplayer.MainActivity;
 
-public class MusicService extends Service implements MediaPlayer.OnPreparedListener,MediaPlayer.OnCompletionListener
-{
+public class MusicService extends Service implements
+				MediaPlayer.OnPreparedListener,
+				MediaPlayer.OnCompletionListener,
+				MediaPlayer.OnErrorListener {
 
-	private MediaPlayer player;
+	private static MediaPlayer player;
 	
 	@Override
 	public IBinder onBind(Intent p1)
@@ -44,6 +47,9 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 			case Constants.ACTION_PLAY:
 				startSong();
 				break;
+			case Constants.ACTION_PAUSE:
+				pause();
+				break;
 			default:
 				break;
 		}
@@ -59,6 +65,7 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 
 		player.setOnPreparedListener(this);
 		player.setOnCompletionListener(this);
+		player.setOnErrorListener(this);
 		
 		try
 		{
@@ -74,6 +81,25 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 	private void startSong(){
 		if(player == null)return;
 		player.start();
+		if(player.isPlaying()){
+			MainActivity.setPlayPauseView(true);
+		}
+	}
+
+	public static boolean isPlaying()
+	{
+		// TODO: Implement this method
+		if(player != null){
+			return player.isPlaying();
+		}else{
+			return false;
+		}
+	}
+
+	private void pause(){
+		if(player != null){
+			player.pause();
+		}
 	}
 	
 	@Override
@@ -100,5 +126,17 @@ public class MusicService extends Service implements MediaPlayer.OnPreparedListe
 		// TODO: Implement this method	
 		MusicManager.playNext();
 	}
+
+	@Override
+	public boolean onError(MediaPlayer p1, int p2, int p3)
+	{
+		// TODO: Implement this method
+		if(player != null){
+			player.reset();
+			MusicManager.playNext();
+		}
+		return false;
+	}
+
 
 }

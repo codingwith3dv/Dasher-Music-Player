@@ -24,5 +24,6 @@ dependencies {
 	compile 'com.android.support:appcompat-v7:25.+'
 	compile 'com.android.support:design:25.+'
 	compile 'com.sothree.slidinguppanel:library:3.4.0'
+	compile 'com.google.code.gson:gson:2.8.2'
     compile fileTree(dir: 'libs', include: ['*.jar'])
 }

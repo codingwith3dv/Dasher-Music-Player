@@ -1,6 +1,7 @@
 package com.dasher.dashermusicplayer;
 
 import android.Manifest;
+import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -15,7 +16,8 @@ import android.widget.Toast;
 import com.dasher.dashermusicplayer.R;
 import com.dasher.dashermusicplayer.Utils.CustomPagerAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.sothree.slidinguppanel.SlidingUpPanelLayout.PanelState;
+import com.dasher.dashermusicplayer.Service.MusicService;
+import com.dasher.dashermusicplayer.Player.MusicManager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -23,20 +25,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private static ViewPager viewPager;
 	private static SlidingUpPanelLayout layout;
 	private static boolean isExpanded;
+	private static Context mContext;
 
 	private static final int STORAGE_REQUEST_CODE = 100;
 
-	private ImageView play;
+	private static ImageView play;
 	private ImageView slideUp;
 	private ImageView slideDown;
 	private float slideOffset;
 	private static Toolbar toolBar;
 
-	public void checkPermission(){
-		if(ContextCompat.checkSelfPermission(getApplicationContext(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-			ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+	public boolean checkPermission(){
+		if(ContextCompat.checkSelfPermission(mContext,Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
+			ActivityCompat.requestPermissions(MainActivity.this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
+			Toast.makeText(mContext,"Please grant storage permission",2000).show();
+			return false;
 		}else{
-			
+			return true;
 		}
 	}
 
@@ -55,22 +60,23 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.main);
+	
+		this.mContext = getApplicationContext();
+		MusicManager.setContext(mContext);
 		
 		toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
 		setSupportActionBar(toolBar);
 		getSupportActionBar().show();
 		
-		checkPermission();
+		if(checkPermission()){
+			
+		}else{
+			checkPermission();
+		}
 		
 		play = (ImageView) findViewById(R.id.mainImageView1);
-		play.setOnClickListener(new View.OnClickListener(){
-			@Override
-			public void onClick(View p1)
-			{
-				Toast.makeText(getApplicationContext(),"PauseEvent",2000).show();
-			}
-		});
-	
+		play.setOnClickListener(this);
+		
 		layout= (SlidingUpPanelLayout)
 			findViewById(R.id.sliding_layout);
 		
@@ -139,7 +145,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				}
 			}
 		});
-
+	
+		if(MusicService.isPlaying()){
+			this.setPlayPauseView(true);
+		}else{
+			this.setPlayPauseView(false);
+		}
 		
 	}
 
@@ -161,6 +172,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			case R.id.botombarxmlImageView1:
 				layout.setPanelState(SlidingUpPanelLayout.PanelState.EXPANDED);
 				break;
+			case R.id.mainImageView1:
+				if(MusicService.isPlaying()){
+					this.setPlayPauseView(false);
+					MusicManager.pauseSong();
+				}else{
+					this.setPlayPauseView(true);
+					MusicManager.playSong();
+				}
+				break;
 		}
 	}
 
@@ -177,6 +197,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 				ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
 			}
 		}
+	}
+
+	public static void setPlayPauseView(boolean isPlaying){
+		if(isPlaying){
+			play.setImageResource(R.drawable.pause_button);
+		}else{
+			play.setImageResource(R.drawable.play_button);
+		}
+	}
+
+	public static Context getContextFromMainActivity(){
+		return mContext;
 	}
 
 }

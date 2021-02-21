@@ -17,7 +17,7 @@ public class ArtistDetailsFragment extends Fragment
 	{
 		// TODO: Implement this method
 		View v = inflater.inflate(R.layout.artist_details,container,false);
-	
+		
 		return v;
 	}
 
