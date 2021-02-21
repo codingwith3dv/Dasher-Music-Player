@@ -63,6 +63,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	
 		this.mContext = getApplicationContext();
 		MusicManager.setContext(mContext);
+		if(!MusicService.isPlaying()){
+			MusicManager.createSong();
+		}
 		
 		toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
 		setSupportActionBar(toolBar);

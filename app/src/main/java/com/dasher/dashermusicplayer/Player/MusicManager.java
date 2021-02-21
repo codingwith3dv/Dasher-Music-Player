@@ -9,6 +9,7 @@ import com.dasher.dashermusicplayer.Utils.Constants;
 import com.dasher.dashermusicplayer.Utils.StorageUtils;
 import com.dasher.dashermusicplayer.Utils.LoadMusic;
 import com.dasher.dashermusicplayer.MainActivity;
+import android.widget.Toast;
 
 public class MusicManager
 {
@@ -35,13 +36,14 @@ public class MusicManager
 		
 	}
 
-	private static void createSong(){
+	public static void createSong(){
 		createFromLastPlayedData();
 		
 		Intent intent = new Intent(mContext,MusicService.class);
 		intent.setAction(Constants.ACTION_CREATE);
 		intent.putExtra(Constants.PATH_REFERENCE,path);
 		intent.putExtra(Constants.TITLE_REFERENCE,title);
+		Toast.makeText(mContext,"Created song " + title + "\n" + path,2000).show();
 		mContext.startService(intent);
 	}
 
@@ -65,8 +67,8 @@ public class MusicManager
 		trackPos++;
 		if(trackPos >= mArrayList.size()){
 			trackPos = 0;
-			saveData();
 		}
+		saveData();
 		path = mArrayList.get(trackPos).getPath();
 		title = mArrayList.get(trackPos).getTitle();
 		artist = mArrayList.get(trackPos).getArtist();
