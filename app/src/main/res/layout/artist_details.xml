@@ -9,7 +9,7 @@
 		android:id="@+id/artistdetails_xmlRecyclerView1"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:background="#FFFFFF"
+		android:background="#FFFFF0"
 		android:padding="2.5dp">
 
 	</android.support.v7.widget.RecyclerView>
