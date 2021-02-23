@@ -1,17 +1,18 @@
 package com.dasher.dashermusicplayer.Fragments;
 
-import android.support.v4.app.*;
-import android.view.*;
-import android.os.*;
-import com.dasher.dashermusicplayer.*;
+
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import java.util.*;
-import com.dasher.dashermusicplayer.Models.*;
-import com.dasher.dashermusicplayer.Utils.*;
-import android.widget.*;
-import android.support.v7.widget.*;
-import android.content.*;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.dasher.dashermusicplayer.Models.AlbumList;
 import com.dasher.dashermusicplayer.R;
+import com.dasher.dashermusicplayer.Utils.ArtistAdapter;
+import com.dasher.dashermusicplayer.Utils.LoadMusic;
+import java.util.ArrayList;
 
 public class ArtistsFragment extends Fragment
 {
@@ -53,7 +54,7 @@ public class ArtistsFragment extends Fragment
 				public void onRecyclerViewOnItemClick(int position)
 				{
 					// TODO: Implement this method
-					getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainRelativeLayoutfordifferentfunctions,new ArtistDetailsFragment()).addToBackStack(null).commit();
+					getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainRelativeLayoutfordifferentfunctions,new ArtistDetailsFragment(lm.getSongsFromArtistId(getActivity(),mArrayList.get(position).getArtistId()))).addToBackStack(null).commit();
 				}
 			});
 	}
