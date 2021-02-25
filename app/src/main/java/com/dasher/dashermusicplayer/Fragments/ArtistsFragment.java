@@ -20,12 +20,20 @@ public class ArtistsFragment extends Fragment
 	RecyclerView mRecyclerView;
 	ArtistAdapter mAdapter;
 	ArrayList<AlbumList> mArrayList;
-	LoadMusic lm;
-
+	
 	public Fragment getNewInstance( )
 	{
 		// TODO: Implement this method
-		return new ArtistsFragment();
+		return this;
+	}
+
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		// TODO: Implement this method
+		super.onCreate(savedInstanceState);
+		mArrayList = LoadMusic.getAlbumList(getActivity());
+		LoadMusic.clearCachedDataArtists();
 	}
 
 	@Override
@@ -33,9 +41,7 @@ public class ArtistsFragment extends Fragment
 	{
 		// TODO: Implement this method
 		View v = inflater.inflate(R.layout.artsits_xml,container,false);
-		lm = new LoadMusic();
-	
-		mArrayList = new ArrayList<>(lm.getAlbumList(getActivity()));
+		
 		mRecyclerView = v.findViewById(R.id.artist_item_layout);
 		showRecyclerView();
 	
@@ -49,14 +55,36 @@ public class ArtistsFragment extends Fragment
 		mRecyclerView.setAdapter(mAdapter);
 		mRecyclerView.setLayoutManager(new GridLayoutManager(getActivity(),2));
 		mAdapter.setOnRecyclerViewItemClickListener(new ArtistAdapter.onRecyclerViewOnItemClickListener(){
+			@Override
+			public void onRecyclerViewOnItemClick(int position)
+			{
+				// TODO: Implement this method
+				getActivity().
+					getSupportFragmentManager().
+					beginTransaction().
+					replace(R.id.mainRelativeLayoutfordifferentfunctions,
+					new ArtistDetailsFragment(
+						LoadMusic.getSongsFromArtistId(
+							getActivity(),mArrayList.get(
+								position
+								).getArtistId()
+							)
+						)
+					).addToBackStack(null).
+					commit();
+				LoadMusic.clearCachedDataArtistDetails();
+			}
+		});
+	}
 
-				@Override
-				public void onRecyclerViewOnItemClick(int position)
-				{
-					// TODO: Implement this method
-					getActivity().getSupportFragmentManager().beginTransaction().replace(R.id.mainRelativeLayoutfordifferentfunctions,new ArtistDetailsFragment(lm.getSongsFromArtistId(getActivity(),mArrayList.get(position).getArtistId()))).addToBackStack(null).commit();
-				}
-			});
+	@Override
+	public void onDestroyView()
+	{
+		// TODO: Implement this method
+		super.onDestroyView();
+		mArrayList = null;
+		mAdapter = null;
+		mRecyclerView = null;
 	}
 
 }

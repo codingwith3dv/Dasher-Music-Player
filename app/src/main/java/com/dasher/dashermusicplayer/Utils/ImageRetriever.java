@@ -5,7 +5,7 @@ import android.media.*;
 public class ImageRetriever
  {
 
-	public byte[] retrieveImageBytesFromPath(String contentPath){
+	public static byte[] retrieveImageBytesFromPath(String contentPath){
 		byte[] imageBytes = null;
 	
 		MediaMetadataRetriever mmr = new MediaMetadataRetriever();

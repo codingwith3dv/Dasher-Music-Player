@@ -19,7 +19,6 @@ public class MusicManager
 	private static String title;
 	private static String artist;
 	private static Context mContext = MainActivity.getContextFromMainActivity();
-	private static Thread thread;
 	
 	public static void setArrayList(Context context,ArrayList<SongList> arrayList,int pos){
 		mArrayList = arrayList;
@@ -37,7 +36,10 @@ public class MusicManager
 	}
 
 	public static void createSong(){
-		createFromLastPlayedData();
+		if(mArrayList == null){
+			createFromLastPlayedData();
+			return;
+		}
 		
 		Intent intent = new Intent(mContext,MusicService.class);
 		intent.setAction(Constants.ACTION_CREATE);
@@ -45,6 +47,7 @@ public class MusicManager
 		intent.putExtra(Constants.TITLE_REFERENCE,title);
 		Toast.makeText(mContext,"Created song " + title + "\n" + path,2000).show();
 		mContext.startService(intent);
+		MainActivity.setCurrentPlayingSongData();
 	}
 
 	public static void playSong(){
@@ -78,7 +81,7 @@ public class MusicManager
 	}
 	
 	private static void createFromLastPlayedData(){
-		if(mArrayList == null){
+		if(mArrayList == null){ 
 			mArrayList = StorageUtils.getLastPlayedArrayList(mContext);
 			trackPos = StorageUtils.getLastPlayedTrackPos(mContext);
 			path = mArrayList.get(trackPos).getPath();
@@ -100,6 +103,14 @@ public class MusicManager
 				}
 			}).start();
 		}
+	}
+
+	public static byte[] getImage(){
+		return mArrayList.get(trackPos).getImage();
+	}
+
+	public static String getSongTitle(){
+		return mArrayList.get(trackPos).getTitle();
 	}
 	
 }

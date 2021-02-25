@@ -3,6 +3,7 @@ package com.dasher.dashermusicplayer;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.ActivityCompat;
@@ -12,12 +13,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
+import com.dasher.dashermusicplayer.Player.MusicManager;
 import com.dasher.dashermusicplayer.R;
+import com.dasher.dashermusicplayer.Service.MusicService;
 import com.dasher.dashermusicplayer.Utils.CustomPagerAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
-import com.dasher.dashermusicplayer.Service.MusicService;
-import com.dasher.dashermusicplayer.Player.MusicManager;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -30,8 +32,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private static final int STORAGE_REQUEST_CODE = 100;
 
 	private static ImageView play;
-	private ImageView slideUp;
-	private ImageView slideDown;
+	private static ImageView albumArtSmall;
+	private static TextView currentPlayingSongName;
+	
 	private float slideOffset;
 	private static Toolbar toolBar;
 
@@ -63,22 +66,16 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	
 		this.mContext = getApplicationContext();
 		MusicManager.setContext(mContext);
-		if(!MusicService.isPlaying()){
-			MusicManager.createSong();
-		}
 		
 		toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
 		setSupportActionBar(toolBar);
 		getSupportActionBar().show();
 		
-		if(checkPermission()){
-			
-		}else{
-			checkPermission();
-		}
-		
 		play = (ImageView) findViewById(R.id.mainImageView1);
 		play.setOnClickListener(this);
+	
+		albumArtSmall = (ImageView) findViewById(R.id.botombarxmlImageView1);
+		currentPlayingSongName = (TextView) findViewById(R.id.botombar_xmlTextView);
 		
 		layout= (SlidingUpPanelLayout)
 			findViewById(R.id.sliding_layout);
@@ -149,11 +146,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			}
 		});
 	
+		if(!MusicService.isPlaying()){
+			MusicManager.createSong();
+		}
+	
 		if(MusicService.isPlaying()){
 			this.setPlayPauseView(true);
 		}else{
 			this.setPlayPauseView(false);
 		}
+	
+		this.setCurrentPlayingSongData();
 		
 	}
 
@@ -212,6 +215,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 	public static Context getContextFromMainActivity(){
 		return mContext;
+	}
+
+	public static void setCurrentPlayingSongData(){
+		if(MusicManager.getImage() != null) 
+			albumArtSmall.setImageBitmap(BitmapFactory.decodeByteArray(MusicManager.getImage(),0,MusicManager.getImage().length));
+		else
+			albumArtSmall.setImageResource(R.drawable.ic_launcher_small_256);
+		currentPlayingSongName.setText(MusicManager.getSongTitle());
 	}
 
 }

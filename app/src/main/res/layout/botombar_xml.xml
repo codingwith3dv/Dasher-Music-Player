@@ -60,7 +60,8 @@
 				android:textSize="20sp"
 				android:layout_marginLeft="5dp"
 				android:singleLine="true"
-				android:typeface="normal"/>
+				android:typeface="normal"
+				android:id="@+id/botombar_xmlTextView"/>
 
 		</RelativeLayout>
 

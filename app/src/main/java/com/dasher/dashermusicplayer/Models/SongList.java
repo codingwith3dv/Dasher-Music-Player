@@ -11,7 +11,7 @@ public class SongList implements Serializable{
 	public SongList(String titlem,String artistm,String pathm,byte[] imagem) {
 		this.title = titlem;
 		this.artist = artistm;
-		this.path = pathm;int i = android.R.drawable.alert_light_frame;
+		this.path = pathm;
 		this.image = imagem;
 	}
 

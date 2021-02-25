@@ -1,21 +1,18 @@
 package com.dasher.dashermusicplayer.Fragments;
-import android.*;
-import android.content.pm.*;
-import android.os.*;
-import android.support.v4.app.*;
-import android.support.v4.content.*;
-import android.support.v7.widget.*;
-import android.view.*;
-import android.widget.*;
-import com.dasher.dashermusicplayer.*;
-import com.dasher.dashermusicplayer.Utils.*;
-import java.util.*;
 
-import com.dasher.dashermusicplayer.R;
-import com.dasher.dashermusicplayer.Models.*;
-import android.content.*;
-import com.dasher.dashermusicplayer.Service.*;
+import android.os.Bundle;
+import android.support.v4.app.Fragment;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import com.dasher.dashermusicplayer.Models.SongList;
 import com.dasher.dashermusicplayer.Player.MusicManager;
+import com.dasher.dashermusicplayer.R;
+import com.dasher.dashermusicplayer.Utils.LoadMusic;
+import com.dasher.dashermusicplayer.Utils.TrackAdapter;
+import java.util.ArrayList;
 
 public class TrackFragment extends Fragment
 {
@@ -24,23 +21,17 @@ public class TrackFragment extends Fragment
 	ArrayList<SongList> mArrayList;
 	TrackAdapter mAdapter;
 	View v;
-	public static final int STORAGE_REQUEST_CODE = 100;
-
-	private LoadMusic lm;
-	MusicService player;
-	private boolean serviceBound = false;
-	
 	public Fragment getNewInstance(){
-		return new TrackFragment();
+		return this;
 	}
 
-	public void checkPermission(){
-		if(ContextCompat.checkSelfPermission(getActivity(),Manifest.permission.READ_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED){
-			ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.READ_EXTERNAL_STORAGE},STORAGE_REQUEST_CODE);
-		}else{
-			showRecyclerView();
-			
-		}
+	@Override
+	public void onCreate(Bundle savedInstanceState)
+	{
+		// TODO: Implement this method
+		super.onCreate(savedInstanceState);
+		mArrayList = LoadMusic.getAllData(getActivity());
+		LoadMusic.clearCachedDataAllSongs();
 	}
 
 	@Override
@@ -48,21 +39,10 @@ public class TrackFragment extends Fragment
 	{
 		// TODO: Implement this method
 		v = inflater.inflate(R.layout.track_xml,container,false);
-	
-		lm = new LoadMusic();
-		player = new MusicService();
 		
-		mArrayList = new ArrayList<SongList>(lm.getAllData(getActivity()));
-		
-		//getActivity().getFragmentManager().beginTransaction().replace(R.id.mainRelativeLayout,bbp.getInstance()).commit();
-		
-		if(mArrayList != null){
-			
-		}
-	
 		mRecyclerView = v.findViewById(R.id.track_xmlRecyclerView1);
 	
-		checkPermission();
+		showRecyclerView();
 		
 		return v;
 	}
@@ -82,6 +62,16 @@ public class TrackFragment extends Fragment
 				MusicManager.setArrayList(getActivity(),mArrayList,position);
 			}
 		});
+	}
+
+	@Override
+	public void onDestroyView()
+	{
+		// TODO: Implement this method
+		super.onDestroyView();
+		mArrayList = null;
+		mRecyclerView = null;
+		mAdapter = null; 
 	}
 
 	@Override

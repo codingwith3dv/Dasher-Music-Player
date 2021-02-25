@@ -9,30 +9,37 @@ import com.dasher.dashermusicplayer.Models.*;
 
 public class LoadMusic {
 
+	
+	private static String titlem;
+	private static String artistm;
+	private static String pathm;
+
+	private static long idm;
+	private static String artistnamem;
+	private static int numm;
+
+	private static int i;
+
+	private static Cursor cursor;
+
+	private static ArrayList<SongList> mArrayList = new ArrayList<SongList>();
+	private static ArrayList<AlbumList> artists = new ArrayList<AlbumList>();
+	private static ArrayList<SongList> songsWithArtist = new ArrayList<SongList>();
+	
 	public static ArrayList<SongList> getAllData(final Context context){
-	
-		final ArrayList<SongList> mArrayList = new ArrayList<>();
-	
-		Uri contentUri = MediaStore.Audio.Media.EXTERNAL_CONTENT_URI;
-		ContentResolver contentResolver = context.getContentResolver();
-		Cursor cursor = contentResolver.query(contentUri,null,null,null,null);
-		ImageRetriever ir = new ImageRetriever();
+		cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,null,null,null);
 
 		if(cursor != null && cursor.moveToFirst()) {
 			try{
-				int title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
-				int artist = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-				int path = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-
 				do{
-					String titlem = cursor.getString(title);
-					String artistm = cursor.getString(artist);
-					String pathm = cursor.getString(path);
+					titlem = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+					artistm = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+					pathm = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
 					if(artistm.contains("<")){
 						artistm = "Unknown";
 					}
-					byte[] image = ir.retrieveImageBytesFromPath(pathm);
+					byte[] image = ImageRetriever.retrieveImageBytesFromPath(pathm);
 					mArrayList.add(new SongList(titlem,artistm,pathm,image));
 				}while(cursor.moveToNext());
 
@@ -44,22 +51,16 @@ public class LoadMusic {
 		return mArrayList;
 	}
 
-	public ArrayList<AlbumList> getAlbumList(final Context context){
-		final ArrayList<AlbumList> artists = new ArrayList<>();
-
-		Uri contentUri = MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI;
-		String id = MediaStore.Audio.Artists._ID;
-		String artistname = MediaStore.Audio.Artists.ARTIST;
-		String num = MediaStore.Audio.Artists.NUMBER_OF_TRACKS;
-	
-		String columns[] = { id, artistname, num };
-		Cursor cursor = context.getContentResolver().query(contentUri,columns,null,null,null);
+	public static ArrayList<AlbumList> getAlbumList(final Context context){
+		String columns[] = { MediaStore.Audio.Artists._ID, MediaStore.Audio.Artists.ARTIST, MediaStore.Audio.Artists.NUMBER_OF_TRACKS };
+		
+		cursor = context.getContentResolver().query(MediaStore.Audio.Artists.EXTERNAL_CONTENT_URI,columns,null,null,null);
 	
 		if(cursor != null && cursor.moveToFirst()){
 			do{
-				long idm = cursor.getLong(cursor.getColumnIndex(id));
-				String artistnamem = cursor.getString(cursor.getColumnIndex(artistname));
-				int numm = cursor.getInt(cursor.getColumnIndex(num));
+				idm = cursor.getLong(cursor.getColumnIndex(MediaStore.Audio.Artists._ID));
+				artistnamem = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Artists.ARTIST));
+				numm = cursor.getInt(cursor.getColumnIndex(MediaStore.Audio.Artists.NUMBER_OF_TRACKS));
 				if(artistnamem.contains("<unknown>")){
 					artistnamem = "Unknown";
 				}
@@ -72,29 +73,23 @@ public class LoadMusic {
 		return artists;
 	}
 
-	public ArrayList<SongList> getSongsFromArtistId(Context context,long id){
-		ArrayList<SongList> songsWithArtist = new ArrayList<SongList>();
+	public static ArrayList<SongList> getSongsFromArtistId(Context context,long id){
 		String selection = MediaStore.Audio.Media.ARTIST_ID + "=" + id + " AND " + 
 			MediaStore.Audio.Media.IS_MUSIC + "=1";
-		ContentResolver cr = context.getContentResolver();
-		Cursor cursor = cr.query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,selection,null,null);
-		ImageRetriever ir = new ImageRetriever();
-
+		cursor = context.getContentResolver().query(MediaStore.Audio.Media.EXTERNAL_CONTENT_URI,null,selection,null,null);
+		
 		if(cursor != null && cursor.moveToFirst()) {
 			try{
-				int title = cursor.getColumnIndex(MediaStore.Audio.Media.TITLE);
-				int artist = cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST);
-				int path = cursor.getColumnIndex(MediaStore.Audio.Media.DATA);
-
+				
 				do{
-					String titlem = cursor.getString(title);
-					String artistm = cursor.getString(artist);
-					String pathm = cursor.getString(path);
+					titlem = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.TITLE));
+					artistm = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
+					pathm = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.DATA));
 
 					if(artistm.contains("<")){
 						artistm = "Unknown";
 					}
-					byte[] image = ir.retrieveImageBytesFromPath(pathm);
+					byte[] image = ImageRetriever.retrieveImageBytesFromPath(pathm);
 					songsWithArtist.add(new SongList(titlem,artistm,pathm,image));
 				}while(cursor.moveToNext());
 
@@ -103,5 +98,20 @@ public class LoadMusic {
 			cursor.close();
 		}
 		return songsWithArtist;
+	}
+	
+	public static void clearCachedDataAllSongs(){
+		mArrayList = null;
+		mArrayList = new ArrayList<SongList>();
+	}
+
+	public static void clearCachedDataArtists(){
+		artists = null;
+		artists = new ArrayList<AlbumList>();
+	}
+	
+	public static void clearCachedDataArtistDetails(){
+		songsWithArtist = null;
+		songsWithArtist = new ArrayList<SongList>();
 	}
 }
