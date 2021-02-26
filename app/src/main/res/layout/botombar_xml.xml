@@ -54,7 +54,7 @@
 				android:layout_height="wrap_content"
 				android:textAppearance="?android:attr/textAppearanceLarge"
 				android:layout_width="wrap_content"
-				android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum id turpis urna. Class aptent taciti sociosqu ad litora torquent per conubia nostra, per inceptos himenaeos. Sed sodales lacus vestibulum quam lobortis, id pretium justo bibendum. Proin eleifend, nulla sed scelerisque imperdiet, eros magna suscipit metus, quis varius neque ligula quis quam. Aenean mattis placerat finibus. Donec vehicula efficitur dolor sit amet hendrerit. Sed tristique, erat a interdum semper, lacus leo aliquet turpis, a fermentum mi magna quis nisi. Aliquam at tortor tortor. Donec tempus ut sem eget tristique."
+				android:text=""
 				android:textColor="#FFFFFF"
 				android:layout_toRightOf="@id/currentPlayImageSmall"
 				android:textSize="20sp"
