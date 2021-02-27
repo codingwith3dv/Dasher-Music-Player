@@ -8,7 +8,8 @@
 		android:id="@+id/track_xmlRecyclerView1"
 		android:layout_width="match_parent"
 		android:layout_height="match_parent"
-		android:padding="2.5dp">
+		android:padding="2.5dp"
+		android:background="@color/colorPrimary">
 
 	</android.support.v7.widget.RecyclerView>
 

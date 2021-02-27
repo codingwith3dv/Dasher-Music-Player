@@ -2,21 +2,22 @@ package com.dasher.dashermusicplayer.Service;
 
 import android.app.Service;
 import android.content.Intent;
+import android.media.AudioManager;
 import android.media.MediaPlayer;
 import android.os.IBinder;
-import com.dasher.dashermusicplayer.Models.SongList;
-import java.io.IOException;
-import java.util.ArrayList;
+import com.dasher.dashermusicplayer.MainActivity;
 import com.dasher.dashermusicplayer.Player.MusicManager;
 import com.dasher.dashermusicplayer.Utils.Constants;
-import com.dasher.dashermusicplayer.MainActivity;
+import java.io.IOException;
+import android.widget.Toast;
 
 public class MusicService extends Service implements
 				MediaPlayer.OnPreparedListener,
 				MediaPlayer.OnCompletionListener,
-				MediaPlayer.OnErrorListener {
+				MediaPlayer.OnErrorListener{
 
 	private static MediaPlayer player;
+	private static AudioManager audioManager;
 	
 	@Override
 	public IBinder onBind(Intent p1)
@@ -31,6 +32,9 @@ public class MusicService extends Service implements
 		// TODO: Implement this method
 		super.onCreate();
 		player = new MediaPlayer();
+		if(audioManager == null){
+			audioManager = (AudioManager) MusicManager.mContext.getSystemService(MusicManager.mContext.AUDIO_SERVICE);
+		}
 	}
 	
 	@Override
@@ -66,6 +70,7 @@ public class MusicService extends Service implements
 		player.setOnPreparedListener(this);
 		player.setOnCompletionListener(this);
 		player.setOnErrorListener(this);
+		player.setAudioStreamType(AudioManager.STREAM_MUSIC);
 		
 		try
 		{
@@ -80,7 +85,8 @@ public class MusicService extends Service implements
 
 	private void startSong(){
 		if(player == null)return;
-		player.start();
+		if(requestAudioFocus())
+			player.start();
 		if(player.isPlaying()){
 			MainActivity.setPlayPauseView(true);
 		}
@@ -138,5 +144,39 @@ public class MusicService extends Service implements
 		return false;
 	}
 
+	private AudioManager.OnAudioFocusChangeListener audioFocusChangeListener = new AudioManager.OnAudioFocusChangeListener()
+	{
+		@Override
+		public void onAudioFocusChange(int p1)
+		{
+			switch(p1){
+				case AudioManager.AUDIOFOCUS_GAIN:
+					startSong();
+					setVolume(1.0f,1.0f);
+					break;
+				case AudioManager.AUDIOFOCUS_LOSS:
+					Toast.makeText(getApplicationContext(),"AudioFocus Lost", 2000).show();
+					pause();
+					break;
+			}
+		}
+	};
 
+	@Deprecated
+	private boolean requestAudioFocus(){
+		if(audioManager.
+			requestAudioFocus(
+				audioFocusChangeListener,
+				AudioManager.STREAM_MUSIC,
+				AudioManager.AUDIOFOCUS_GAIN_TRANSIENT_MAY_DUCK
+			) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
+		{
+			return true;
+		}
+		return false;
+	}
+
+	private static void setVolume(float left, float right){
+		player.setVolume(left,right);
+	}
 }

@@ -10,7 +10,8 @@
 	android:layout_marginTop="5dp"
 	android:layout_marginBottom="5dp"
 	app:cardCornerRadius="10dp"
-	app:cardElevation="8dp">
+	app:cardElevation="8dp"
+	app:cardBackgroundColor="@color/cardColorPrimaryMain">
 
 	<RelativeLayout
 		android:layout_width="match_parent"
@@ -23,7 +24,8 @@
 			app:cardCornerRadius="10dp"
 			app:cardElevation="4dp"
 			android:id="@+id/trackitemlayoutCardView"
-			app:cardPreventCornerOverlap="false">
+			app:cardPreventCornerOverlap="false"
+			app:cardBackgroundColor="@color/cardColorPrimaryMain">
 
 			<ImageView
 				android:layout_height="43dp"
@@ -49,7 +51,8 @@
 				android:text="Large Text"
 				android:id="@+id/trackitemlayoutTextView1"
 				android:textSize="20sp"
-				android:singleLine="true"/>
+				android:singleLine="true"
+				android:textColor="@color/textColorPrimary"/>
 
 			<TextView
 				android:layout_height="wrap_content"
@@ -59,7 +62,8 @@
 				android:layout_below="@id/trackitemlayoutTextView1"
 				android:textSize="15sp"
 				android:id="@+id/trackitemlayoutTextView2"
-				android:singleLine="true"/>
+				android:singleLine="true"
+				android:textColor="@color/textColorSecondary"/>
 
 		</RelativeLayout>
 

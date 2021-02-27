@@ -10,8 +10,10 @@ import android.support.v4.app.ActivityCompat;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
+import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -36,7 +38,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private static TextView currentPlayingSongName;
 	
 	private float slideOffset;
-	private static Toolbar toolBar;
+	private static Toolbar toolBar;static boolean isDark;
 
 	public static void hideOrShowActionBar(boolean show){
 		if(show){
@@ -52,8 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
-		setTheme(R.style.AppThemeDark);
-        setContentView(R.layout.main);
+		setContentView(R.layout.main);
 	
 		this.mContext = getApplicationContext();
 		
@@ -78,7 +79,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		getSupportActionBar().show();
 	
 		play.setOnClickListener(this);
-		
+	
+		AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
 	}
 
 	private void init()
@@ -189,6 +191,17 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		else
 			albumArtSmall.setImageResource(R.drawable.ic_launcher_small_256);
 		currentPlayingSongName.setText(MusicManager.getSongTitle());
+	}
+
+	public static void switchTheme(){
+		Toast.makeText(mContext,"Theme Change",2000).show();
+		if(isDark){
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+			isDark = false;
+		}else{
+			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+			isDark = true;
+		}
 	}
 
 }
