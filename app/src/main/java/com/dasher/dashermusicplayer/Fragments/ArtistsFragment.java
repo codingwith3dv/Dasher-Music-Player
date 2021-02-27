@@ -13,13 +13,15 @@ import com.dasher.dashermusicplayer.R;
 import com.dasher.dashermusicplayer.Utils.ArtistAdapter;
 import com.dasher.dashermusicplayer.Utils.LoadMusic;
 import java.util.ArrayList;
+import android.widget.Toast;
 
 public class ArtistsFragment extends Fragment
 {
 
-	RecyclerView mRecyclerView;
+	static RecyclerView mRecyclerView;
 	ArtistAdapter mAdapter;
 	ArrayList<AlbumList> mArrayList;
+	private View v;
 	
 	public Fragment getNewInstance( )
 	{
@@ -40,7 +42,7 @@ public class ArtistsFragment extends Fragment
 	public View onCreateView(LayoutInflater inflater,ViewGroup container, Bundle savedInstanceState )
 	{
 		// TODO: Implement this method
-		View v = inflater.inflate(R.layout.artsits_xml,container,false);
+		v = inflater.inflate(R.layout.artsits_xml,container,false);
 		
 		mRecyclerView = v.findViewById(R.id.artist_item_layout);
 		showRecyclerView();
@@ -72,6 +74,7 @@ public class ArtistsFragment extends Fragment
 						)
 					).addToBackStack(null).
 					commit();
+					method(false);
 				LoadMusic.clearCachedDataArtistDetails();
 			}
 		});
@@ -85,6 +88,11 @@ public class ArtistsFragment extends Fragment
 		mArrayList = null;
 		mAdapter = null;
 		mRecyclerView = null;
+	}
+
+	public static void method(boolean show)
+	{
+		mRecyclerView.setVisibility((show == true) ? View.VISIBLE : View.INVISIBLE);
 	}
 
 }

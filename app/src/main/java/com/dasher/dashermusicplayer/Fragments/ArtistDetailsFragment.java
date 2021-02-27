@@ -66,5 +66,13 @@ public class ArtistDetailsFragment extends Fragment
 				}
 			});
 	}
+
+	@Override
+	public void onDestroy()
+	{
+		// TODO: Implement this method
+		super.onDestroy();
+		ArtistsFragment.method(true);
+	}
 	
 }

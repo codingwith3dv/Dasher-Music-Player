@@ -25,7 +25,6 @@
 				android:id="@+id/mainAppBarLayout">
 				<android.support.v7.widget.Toolbar
 					android:id = "@+id/appbarlayout_tool_bar"
-					android:background = "@color/colorPrimary"
 					android:layout_width = "match_parent"
 					android:layout_height = "?attr/actionBarSize"
 					app:layout_scrollFlags = "scroll|snap|enterAlways"
@@ -35,8 +34,6 @@
 					android:layout_width="match_parent"
 					android:layout_height="35dp"
 					android:layout_alignParentTop="true"
-					android:textColor="@color/colorBlack"
-					android:background="@color/colorPrimary"
 					android:elevation="0dp"
 					android:minHeight="35dp"/>
 			</android.support.design.widget.AppBarLayout>
