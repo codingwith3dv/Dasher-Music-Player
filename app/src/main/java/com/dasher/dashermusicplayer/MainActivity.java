@@ -194,7 +194,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	}
 
 	public static void switchTheme(){
-		Toast.makeText(mContext,"Theme Change",2000).show();
+		Toast.makeText(mContext,"Theme Changed",2000).show();
 		if(isDark){
 			AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 			isDark = false;
