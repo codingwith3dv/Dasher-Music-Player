@@ -58,6 +58,7 @@
 			<include
 				android:id="@+id/maininclude"
 				layout = "@layout/botombar_xml"/>
+		
 		</RelativeLayout>
 
 	</com.sothree.slidinguppanel.SlidingUpPanelLayout>

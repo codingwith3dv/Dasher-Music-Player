@@ -3,6 +3,7 @@ package com.dasher.dashermusicplayer;
 import android.Manifest;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -13,7 +14,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.app.AppCompatDelegate;
 import android.support.v7.widget.Toolbar;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,9 +35,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
 	private static ImageView play;
 	private static ImageView albumArtSmall;
+	private static ImageView albumArtLarge;
 	private static TextView currentPlayingSongName;
 	
 	private float slideOffset;
+	private static Bitmap bitmap;
 	private static Toolbar toolBar;static boolean isDark;
 
 	public static void hideOrShowActionBar(boolean show){
@@ -62,6 +64,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		tabLayout = (TabLayout) findViewById(R.id.tab_layout);
 		play = (ImageView) findViewById(R.id.mainImageView1);
 		albumArtSmall = (ImageView) findViewById(R.id.botombarxmlImageView1);
+		albumArtLarge = (ImageView) findViewById(R.id.bottombarxmlbottompartImageView1);
 		currentPlayingSongName = (TextView) findViewById(R.id.botombar_xmlTextView);
 		layout= (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
 		viewPager = (ViewPager) findViewById(R.id.mainViewPager1);
@@ -186,10 +189,15 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	}
 
 	public static void setCurrentPlayingSongData(){
-		if(MusicManager.getImage() != null) 
-			albumArtSmall.setImageBitmap(BitmapFactory.decodeByteArray(MusicManager.getImage(),0,MusicManager.getImage().length));
-		else
+		if(MusicManager.getImage() != null){
+			bitmap = BitmapFactory.decodeByteArray(MusicManager.getImage(), 0 , MusicManager.getImage().length);
+			albumArtSmall.setImageBitmap(bitmap);
+			albumArtLarge.setImageBitmap(bitmap);
+		}
+		else{
 			albumArtSmall.setImageResource(R.drawable.ic_launcher_small_256);
+			albumArtLarge.setImageResource(R.drawable.ic_launcher_small_256);
+		}
 		currentPlayingSongName.setText(MusicManager.getSongTitle());
 	}
 
