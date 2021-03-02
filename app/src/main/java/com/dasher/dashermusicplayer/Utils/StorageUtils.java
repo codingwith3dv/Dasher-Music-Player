@@ -36,10 +36,20 @@ public class StorageUtils
 	public static void setLastPlayedTrackPos(Context context, int trackPos){
 		sharedPrefs = context.getSharedPreferences("LAST_PLAYED_SONG_DATA", context.MODE_APPEND);
 		sharedPrefsEditor = sharedPrefs.edit();
-		sharedPrefsEditor.putInt(Constants.LAST_PLAYED_SONG_POS,trackPos).commit();
+		sharedPrefsEditor.putInt(Constants.LAST_PLAYED_TRACK_POS,trackPos).commit();
 	}
 
 	public static int getLastPlayedTrackPos(Context context){
+		return context.getSharedPreferences("LAST_PLAYED_SONG_DATA",context.MODE_PRIVATE).getInt(Constants.LAST_PLAYED_TRACK_POS,0);
+	}
+
+	public static void setLastPlayedSongPos(Context context,int pos){
+		sharedPrefs = context.getSharedPreferences("LAST_PLAYED_SONG_DATA", context.MODE_APPEND);
+		sharedPrefsEditor = sharedPrefs.edit();
+		sharedPrefsEditor.putInt(Constants.LAST_PLAYED_SONG_POS,pos).commit();
+	}
+
+	public static int getLastPlayedSongPos(Context context){
 		return context.getSharedPreferences("LAST_PLAYED_SONG_DATA",context.MODE_PRIVATE).getInt(Constants.LAST_PLAYED_SONG_POS,0);
 	}
 }

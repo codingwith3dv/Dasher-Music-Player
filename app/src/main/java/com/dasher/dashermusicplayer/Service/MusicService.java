@@ -10,6 +10,7 @@ import com.dasher.dashermusicplayer.Player.MusicManager;
 import com.dasher.dashermusicplayer.Utils.Constants;
 import java.io.IOException;
 import android.widget.Toast;
+import com.dasher.dashermusicplayer.Utils.StorageUtils;
 
 public class MusicService extends Service implements
 				MediaPlayer.OnPreparedListener,
@@ -54,6 +55,9 @@ public class MusicService extends Service implements
 			case Constants.ACTION_PAUSE:
 				pause();
 				break;
+			case Constants.ACTION_SEEK:
+				seekTo(intent.getIntExtra(Constants.SEEK_REFERENCE,0));
+				break;
 			default:
 				break;
 		}
@@ -81,6 +85,11 @@ public class MusicService extends Service implements
 		catch (IOException e){}
 		catch (IllegalArgumentException e){}
 		catch (SecurityException e){}
+	
+		MainActivity.setMax(player.getDuration());
+		
+		MainActivity.haltTimeline();
+		MainActivity.updateTimeline();
 	}
 
 	private void startSong(){
@@ -105,7 +114,29 @@ public class MusicService extends Service implements
 	private void pause(){
 		if(player != null){
 			player.pause();
+			MainActivity.haltTimeline();
+			
+			StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(), player.getCurrentPosition());
 		}
+	}
+	
+	public static void seekTo(int seekPos){
+		if(player != null) 
+			player.seekTo(seekPos);
+		MainActivity.haltTimeline();
+		MainActivity.updateTimeline();
+		StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(),seekPos);
+	}
+
+	public static int getCurrentPos()
+	{
+		if(player != null) return player.getCurrentPosition();
+		return 0;
+	}
+
+	public static int getMax(){
+		if(player != null) return player.getDuration();
+		return 0;
 	}
 	
 	@Override

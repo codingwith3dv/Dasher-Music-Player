@@ -22,6 +22,9 @@ import com.dasher.dashermusicplayer.R;
 import com.dasher.dashermusicplayer.Service.MusicService;
 import com.dasher.dashermusicplayer.Utils.CustomPagerAdapter;
 import com.sothree.slidinguppanel.SlidingUpPanelLayout;
+import android.widget.SeekBar;
+import android.os.Handler;
+import com.dasher.dashermusicplayer.Utils.StorageUtils;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -37,10 +40,20 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	private static ImageView albumArtSmall;
 	private static ImageView albumArtLarge;
 	private static TextView currentPlayingSongName;
+	private static SeekBar mSeekBar;
 	
 	private float slideOffset;
 	private static Bitmap bitmap;
 	private static Toolbar toolBar;static boolean isDark;
+	private static Handler handler = new Handler();
+
+	private static Runnable TimeLineRunnable = new Runnable(){
+		@Override
+		public void run(){
+			mSeekBar.setProgress(MusicService.getCurrentPos());
+			handler.postDelayed(this,100);
+		}
+	};
 
 	public static void hideOrShowActionBar(boolean show){
 		if(show){
@@ -60,14 +73,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	
 		this.mContext = getApplicationContext();
 		
-		toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
-		tabLayout = (TabLayout) findViewById(R.id.tab_layout);
-		play = (ImageView) findViewById(R.id.mainImageView1);
-		albumArtSmall = (ImageView) findViewById(R.id.botombarxmlImageView1);
-		albumArtLarge = (ImageView) findViewById(R.id.bottombarxmlbottompartImageView1);
-		currentPlayingSongName = (TextView) findViewById(R.id.botombar_xmlTextView);
-		layout= (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
-		viewPager = (ViewPager) findViewById(R.id.mainViewPager1);
+		initializeViews();
 		
 		tabLayout.addTab(tabLayout.newTab().setText("Tracks"));
 		tabLayout.addTab(tabLayout.newTab().setText("Artists"));
@@ -82,8 +88,34 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		getSupportActionBar().show();
 	
 		play.setOnClickListener(this);
-	
+		haltTimeline();updateTimeline();
 		AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+	}
+
+	private void initializeViews()
+	{
+		toolBar = (Toolbar) findViewById(R.id.appbarlayout_tool_bar);
+		tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+		play = (ImageView) findViewById(R.id.mainImageView1);
+		albumArtSmall = (ImageView) findViewById(R.id.botombarxmlImageView1);
+		albumArtLarge = (ImageView) findViewById(R.id.bottombarxmlbottompartImageView1);
+		currentPlayingSongName = (TextView) findViewById(R.id.botombar_xmlTextView);
+		layout = (SlidingUpPanelLayout)findViewById(R.id.sliding_layout);
+		viewPager = (ViewPager) findViewById(R.id.mainViewPager1);
+		mSeekBar = (SeekBar) findViewById(R.id.bottombarxmlbottompartSeekBar1);
+	}
+
+	public static void updateTimeline()
+	{
+		handler.postDelayed(TimeLineRunnable, 500);
+	}
+
+	public static void haltTimeline(){
+		handler.removeCallbacks(TimeLineRunnable);
+	}
+
+	public static void setMax(int max){
+		mSeekBar.setMax(max);
 	}
 
 	private void init()
@@ -124,10 +156,32 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 			}
 		});
 
-		if (!MusicService.isPlaying()) { MusicManager.createSong(); }
+		if (!MusicService.isPlaying()) { 
+			MusicManager.createSong();
+			MusicManager.seekSongTo(StorageUtils.getLastPlayedSongPos(mContext));
+		}
+		mSeekBar.setMax(MusicService.getMax());
 		if (MusicService.isPlaying()) { this.setPlayPauseView(true); }
 		else { this.setPlayPauseView(false); }
 		this.setCurrentPlayingSongData();
+
+		mSeekBar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener(){
+			@Override
+			public void onProgressChanged(SeekBar seekbar,int progress,boolean fromUser){
+				if(fromUser){
+					
+				}
+			}
+			@Override
+			public void onStartTrackingTouch(SeekBar seekBar){
+				haltTimeline();
+			}
+			@Override
+			public void onStopTrackingTouch(SeekBar seekBar){
+				MusicManager.seekSongTo(seekBar.getProgress());
+				updateTimeline();
+			}
+		});
 	}
 
 	@Override

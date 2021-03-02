@@ -51,6 +51,14 @@ public class MusicManager
 		MainActivity.setCurrentPlayingSongData();
 	}
 
+	public static void seekSongTo(int pos){
+		Intent intent = new Intent(mContext,MusicService.class);
+		intent.setAction(Constants.ACTION_SEEK);
+		intent.putExtra(Constants.SEEK_REFERENCE,pos);
+		mContext.startService(intent);
+		StorageUtils.setLastPlayedSongPos(mContext,pos);
+	}
+	
 	public static void playSong(){
 		createFromLastPlayedData();
 		

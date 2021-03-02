@@ -3,8 +3,7 @@
 	xmlns:android="http://schemas.android.com/apk/res/android"
 	xmlns:app="http://schemas.android.com/apk/res-auto"
 	android:layout_height="match_parent"
-	android:layout_width="match_parent"
-	android:layout_gravity="bottom">
+	android:layout_width="match_parent">
 
 	<RelativeLayout
 		android:layout_height="50dp"
@@ -66,9 +65,16 @@
 
 	</RelativeLayout>
 
-	<include
+	<RelativeLayout
+		android:layout_height="wrap_content"
+		android:layout_width="wrap_content"
 		android:layout_below="@id/botombar_xmlRelativeLayout"
-		layout = "@layout/bottombar_xml_bottom_part"/>
+		android:background="@color/colorPrimary">
+
+		<include
+			layout="@layout/bottombar_xml_bottom_part"/>
+
+	</RelativeLayout>
 
 </RelativeLayout>
 
