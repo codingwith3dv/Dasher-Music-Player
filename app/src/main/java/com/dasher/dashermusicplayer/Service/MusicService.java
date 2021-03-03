@@ -34,7 +34,7 @@ public class MusicService extends Service implements
 		super.onCreate();
 		player = new MediaPlayer();
 		if(audioManager == null){
-			audioManager = (AudioManager) MusicManager.mContext.getSystemService(MusicManager.mContext.AUDIO_SERVICE);
+			//audioManager = (AudioManager) MusicManager.mContext.getSystemService(MusicManager.mContext.AUDIO_SERVICE);
 		}
 	}
 	
@@ -86,15 +86,14 @@ public class MusicService extends Service implements
 		catch (IllegalArgumentException e){}
 		catch (SecurityException e){}
 	
-		MainActivity.setMax(player.getDuration());
+		MainActivity.musicInfo.getDur(player.getDuration());
 		
-		MainActivity.haltTimeline();
-		MainActivity.updateTimeline();
+		
 	}
 
 	private void startSong(){
 		if(player == null)return;
-		if(requestAudioFocus())
+		//if(requestAudioFocus())
 			player.start();
 		if(player.isPlaying()){
 			MainActivity.setPlayPauseView(true);
@@ -114,7 +113,6 @@ public class MusicService extends Service implements
 	private void pause(){
 		if(player != null){
 			player.pause();
-			MainActivity.haltTimeline();
 			
 			StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(), player.getCurrentPosition());
 		}
@@ -123,8 +121,7 @@ public class MusicService extends Service implements
 	public static void seekTo(int seekPos){
 		if(player != null) 
 			player.seekTo(seekPos);
-		MainActivity.haltTimeline();
-		MainActivity.updateTimeline();
+		
 		StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(),seekPos);
 	}
 
@@ -145,6 +142,7 @@ public class MusicService extends Service implements
 		// TODO: Implement this method
 		super.onDestroy();
 		if(player != null){
+			StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(), player.getCurrentPosition());
 			player.release();
 			player = null;
 		}
@@ -195,7 +193,7 @@ public class MusicService extends Service implements
 
 	@Deprecated
 	private boolean requestAudioFocus(){
-		if(audioManager.
+		/*if(audioManager.
 			requestAudioFocus(
 				audioFocusChangeListener,
 				AudioManager.STREAM_MUSIC,
@@ -203,7 +201,7 @@ public class MusicService extends Service implements
 			) == AudioManager.AUDIOFOCUS_REQUEST_GRANTED)
 		{
 			return true;
-		}
+		}*/
 		return false;
 	}
 

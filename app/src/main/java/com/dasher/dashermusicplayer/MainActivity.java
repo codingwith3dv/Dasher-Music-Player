@@ -25,6 +25,7 @@ import com.sothree.slidinguppanel.SlidingUpPanelLayout;
 import android.widget.SeekBar;
 import android.os.Handler;
 import com.dasher.dashermusicplayer.Utils.StorageUtils;
+import com.dasher.dashermusicplayer.Interfaces.MusicInfo;
 
 public class MainActivity extends AppCompatActivity implements View.OnClickListener
 {
@@ -52,6 +53,14 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		public void run(){
 			mSeekBar.setProgress(MusicService.getCurrentPos());
 			handler.postDelayed(this,100);
+		}
+	};
+
+	public static MusicInfo musicInfo = new MusicInfo(){
+		@Override
+		public void getDur(int duration)
+		{
+			mSeekBar.setMax(duration);
 		}
 	};
 
@@ -89,7 +98,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 	
 		play.setOnClickListener(this);
 		haltTimeline();updateTimeline();
-		AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+		AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
 	}
 
 	private void initializeViews()
