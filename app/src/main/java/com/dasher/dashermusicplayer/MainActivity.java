@@ -62,6 +62,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 		{
 			mSeekBar.setMax(duration);
 		}
+
+		@Override
+		public void isPlaying(boolean isPlaying)
+		{
+			setPlayPauseView(isPlaying);
+		}
 	};
 
 	public static void hideOrShowActionBar(boolean show){

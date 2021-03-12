@@ -94,10 +94,8 @@ public class MusicService extends Service implements
 	private void startSong(){
 		if(player == null)return;
 		//if(requestAudioFocus())
-			player.start();
-		if(player.isPlaying()){
-			MainActivity.setPlayPauseView(true);
-		}
+		player.start();
+		MainActivity.musicInfo.isPlaying(player.isPlaying());
 	}
 
 	public static boolean isPlaying()
@@ -113,7 +111,7 @@ public class MusicService extends Service implements
 	private void pause(){
 		if(player != null){
 			player.pause();
-			
+			MainActivity.musicInfo.isPlaying(player.isPlaying());
 			StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(), player.getCurrentPosition());
 		}
 	}
@@ -146,6 +144,14 @@ public class MusicService extends Service implements
 			player.release();
 			player = null;
 		}
+	}
+
+	@Override
+	public void onTaskRemoved(Intent rootIntent)
+	{
+		// TODO: Implement this method
+		super.onTaskRemoved(rootIntent);
+		StorageUtils.setLastPlayedSongPos(MainActivity.getContextFromMainActivity(), player.getCurrentPosition());
 	}
 
 	@Override
